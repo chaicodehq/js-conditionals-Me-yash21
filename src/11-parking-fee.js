@@ -34,4 +34,46 @@
  */
 export function calculateParkingFee(hours, vehicleType) {
   // Your code here
+  // funciton to check the valid vehicle type  
+  function isValidVehicleType(vehicleType){
+    return vehicleType === "car" || vehicleType === "motorcycle" || vehicleType === "bus";
+  }
+
+  const vehicle_first_hour_charges = {
+    "car":5,
+    "motorcycle":3,
+    "bus":10
+  }
+
+  const vehicle_additional_hours_charges ={
+    "car":3,
+    "motorcycle":2,
+    "bus":7
+  }
+
+  const daily_maximum = {
+    "car":30,
+    "motorcycle":18,
+    "bus":60
+  }
+
+  
+  if( hours<=0 || !isValidVehicleType(vehicleType)){
+    return -1;
+  }else{
+    //rounded the hours.
+    // we can't use Math.round() method here, because it return the nearest integer number. in the case of 2.1 hour Math.round(2.1) return 2 that effect fee charges. we use math.ceil() method because it roundes up to the nearest integer. 
+    let rounded_hours = Math.ceil(hours)
+
+    // first hour fee + (total_hours - 1) additionl hour fee
+    let fee = vehicle_first_hour_charges[vehicleType] + (rounded_hours - 1) *vehicle_additional_hours_charges[vehicleType] ;
+
+    // if fee is greater then daily maximum fee , then return maximum fee.
+    if(fee > daily_maximum[vehicleType]){
+      return daily_maximum[vehicleType];
+    }
+
+    return fee;
+  }
+
 }

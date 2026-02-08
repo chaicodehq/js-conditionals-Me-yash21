@@ -27,4 +27,50 @@
  */
 export function checkPasswordStrength(password) {
   // Your code here
+  function isNonEmptyString(str){
+    return typeof str === 'string' && str.trim() !== "";
+  }
+
+  // If password is non empty string. then check for futher conditions
+  //   otherwise return "weak"
+  if(isNonEmptyString(password) ){
+    
+    // Test cases to determine the strength of the password
+    let test_for_length = password.length >= 8;
+    let test_uppercase = /[A-Z]/.test(password);
+    let test_lowercase = /[a-z]/.test(password);
+    let test_for_number = /\d/.test(password);
+    let test_for_special_char = /[^a-zA-Z0-9]/.test(password)
+
+    // array of result of the all tests.
+    const test_result_array = [test_for_length, test_uppercase, test_lowercase, test_for_number, test_for_special_char];
+
+    //function to check how many test result are true.
+    function num_passed_test(result_array=[]){
+      return result_array.reduce((total_passed_tests,one_test_result)=>{
+        if(one_test_result == true)
+          return total_passed_tests + 1;
+        else
+          return total_passed_tests;
+      },0);
+    }
+
+    // Number of passed tests.
+    const total_number_of_passed_test = num_passed_test(test_result_array);
+
+    //base of the passed test number, return the strenth of the password.
+    if(total_number_of_passed_test == test_result_array.length){
+      return "very strong";
+    }else if( total_number_of_passed_test == 4)
+    {
+      return "strong";
+    }else if(total_number_of_passed_test == 2 || total_number_of_passed_test == 3){
+      return "medium";
+    }else{
+      return "weak"
+    }
+
+  }else{
+    return "weak"
+  }
 }
